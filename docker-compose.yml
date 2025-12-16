@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  backend:
+    image: skamau123/spending-tracker-services:latest
+    container_name: springboot_app
+    env_file:
+      - .env
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+    ports:
+      - "8080:8080"
+    volumes:
+      - tracker_sqlite:/data
+
+  frontend:
+    image: skamau123/spending-tracker-frontend:latest
+    container_name: nextjs_app
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  tracker_sqlite:
